@@ -86,12 +86,12 @@ ingreso<-ingreso%>%
          P081=ifelse(clave=="P081",suma,0))
 
 ingreso<-ingreso%>%
-  mutate(labor=P001+P002+P003+P004+P005+P006+P007+P008+P009+P011+P013+P014+P015+P016+P018+P021+P022+P034+P035+P036+P067+P068+P069+P070+P071+P072+P073+P074+P075+P076+P077+P078+P079+P080+P081,
-         capital=P012+P019+P023+P024+P025+P026+P027+P028+P029+P030+P031+P050+P051+P052+P053+P054+P055+P056+P057+P058+P059+P060+P061+P062+P063+P064+P065+P066,
+  mutate(labor=P001+P002+P003+P004+P005+P006+P007+P008+P009+P011+P013+P014+P015+P016+P018+P021+P022+P035+P036+P067+P068+P069+P070+P071+P072+P073+P074+P075+P076+P077+P078+P079+P080+P081,
+         capital=P012+P019+P023+P024+P025+P026+P027+P028+P029+P030+P031,
          pensions=P032+P033,
-         private_trans=P037+P039+P040,
+         private_trans=P037+P039+P040+P049,
          remittances=P041,
-         government=P038+P042+P043+P044+P045+P046+P047+P049)
+         government=P038+P042+P043+P044+P045+P046+P047+P048)
 
 ingreso<-ingreso%>%
   mutate(total=labor+capital+pensions+private_trans+remittances+government)
@@ -138,38 +138,25 @@ mean(conc$labor)
 
 mean(conc$ingtrab)
 
-conc$ingtrab==conc$labor
-
-conc<-conc%>%
-  mutate(prueba=ifelse(ingtrab==labor,0,1))
-
-
-mean(conc$prueba)
-
-
-conc$rentas==conc$capital
-
-conc[2,]
-
 
 mean(conc$rentas)
 
 mean(conc$capital)
 
-####### qué hacemos cone el cpaital???
-
-
-
-
-
-
-
-
-conc<-conc%>%
-  mutate(prueba=ing_cor-conc$estim_alqu-conc$transf_hog-conc$trans_inst-conc$otros_ing)
-
-
 all.equal(conc$ingtrab,conc$labor)
 all.equal(conc$rentas,conc$capital)
 all.equal(conc$jubilacion,conc$pensions)
 all.equal(conc$remesas,conc$remittances)
+
+conc<-conc%>%
+  mutate(total=labor+capital+pensions+private_trans+remittances+government)
+
+mean(conc$ing_cor)
+mean(conc$total)
+
+conc<-conc%>%
+  mutate(prueba=round(ing_cor-total,2))
+
+summary(conc$prueba)
+
+
